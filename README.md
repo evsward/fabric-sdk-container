@@ -1,6 +1,7 @@
 # HyperLedger/Fabric SDK Docker Image
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](https://github.com/aberic/fabric-sdk-container/blob/master/LICENSE)
 [![fabric-sdk image](https://img.shields.io/docker/build/jrottenberg/ffmpeg.svg)](https://hub.docker.com/r/aberic/fabric-sdk/)
-[![AUR](https://img.shields.io/aur/license/yaourt.svg)](https://github.com/aberic/fabric-sdk-container/blob/master/LICENSE)
+[![Swagger Validator](https://img.shields.io/swagger/valid/2.0/https/raw.githubusercontent.com/OAI/OpenAPI-Specification/master/examples/v2.0/json/petstore-expanded.json.svg)](http://140.143.210.217:8090/swagger-ui.html)
 <br>
 这是一个基于[fabric-sdk-java](https://github.com/hyperledger/fabric-sdk-java)的项目，该项目的主要目的是简化HyperLedger/Fabric开发人员在SDK应用层上的工作流程，使得开发和部署更加简单。
 <br><br>
@@ -27,6 +28,8 @@
 <br>
 [v1.0-beta](https://github.com/aberic/fabric-sdk-container/tree/v1.0-beta)：新增支持多服务节点。
 <br>
+[v1.0-beta2](https://github.com/aberic/fabric-sdk-container/tree/v1.0-beta2)：修复重新新增组织、排序服务和节点服务的bug；提供更新组织、排序服务和节点服务的接口；新增Swagger2文档支持。
+<br>
 v1.0-RC：新增通过SDK加入通道、安装合约、实例化合约以及升级合约等功能。
 <br><br>
 ## 使用sdk-container
@@ -34,7 +37,7 @@ v1.0-RC：新增通过SDK加入通道、安装合约、实例化合约以及升�
 <br>
 2、在待部署SDK服务器上安装`Docker`及`docker compose`环境。
 <br>
-3、执行`docker pull aberic/fabric-sdk:1.0-beta`下载镜像。
+3、执行`docker pull aberic/fabric-sdk:1.0-beta2`下载镜像。
 <br>
 4、在`docker-sdk.yaml`文件中配置好Fabric网络中所期望连接的排序服务及节点服务参数，这两类服务各允许设置一台，后续的版本中会增加使用SDK多服务网络方案。
 <br>
@@ -82,109 +85,38 @@ docker-sdk.yaml中的ports，后一个为容器中端口号，不用修改，冒
 <br><br>
 **API入口文档**
 
-| Method | REST API         | Description                                                                                                                                                                               |
-| :--:   | :--              | :--                                                                                                                                                                                       |
-| POST   | /sdk/chaincode   | 执行、查询                                                                                                                                                                                |
-| POST   | /sdk/trace       | 在指定频道内根据transactionID查询区块、在指定频道内根据hash查询区块、在指定频道内根据区块高度查询区块以及查询当前频道的链信息，包括链长度、当前最新区块hash以及当前最新区块的上一区块hash |
-| POST   | /sdk/org/add     | 新增组织信息                                                                                                                                                                              |
-| POST   | /sdk/orderer/add | 新增排序服务器信息                                                                                                                                                                        |
-| POST   | /sdk/peer/add    | 新增节点服务器信息                                                                                                                                                                        |
+| Method | REST API         | Description                        |
+| :--:   | :--              | :--                                |
+| POST   | /sdk/chaincode/invoke    | 执行智能合约                 |
+| POST   | /sdk/chaincode/query     | 查询智能合约                 |
+| POST   | /sdk/org/add             | 新增组织对象                 |
+| GET    | /sdk/org/list            | 获取组织对象集合              |
+| POST   | /sdk/org/update          | 更新组织对象                 |
+| POST   | /sdk/orderer/add         | 新增排序服务对象              |
+| GET    | /sdk/orderer/list/{hash} | 获取排序服务对象集合          |
+| POST   | /sdk/orderer/update      | 更新排序服务对象              |
+| POST   | /sdk/peer/add            | 新增节点服务对象              |
+| GET    | /sdk/peer/list/{hash}    | 获取节点服务对象集合          |
+| POST   | /sdk/peer/update         | 更新节点服务对象              |
+| POST   | /sdk/trace/hash          | 根据交易hash查询区块          |
+| POST   | /sdk/trace/number        | 根据交易区块高度查询区块       |
+| POST   | /sdk/trace/txid          | 根据交易ID查询区块            |
+| GET    | /sdk/trace/info/{hash}   | 根据当前组织hash查询当前链信息 |
 
 该版本目前为即上即用的版本，仅提供单排序服务及单节点服务，因此API文档中未提供安装、实例化及升级操作，但在后续更新中，会支持安装、实例化及升级的功能。如果有PAAS服务的需要，可以自行参考v0.2中的方案来解决。
 <br>
-### API方法示例
-#### /sdk/chaincode
-##### 执行合约
-```json
-{
-    "intent": "invoke",
-    "array": [
-        "set",
-        "A",
-        "0"
-    ]
-}
-```
-##### 查询合约
-```json
-{
-    "intent": "query",
-    "array": [
-        "get"
-    ]
-}
-```
-intent是指对智能合约进行操作的意图。
+### API要点
+由于提供了[swagger2](https://github.com/aberic/fabric-sdk-container/blob/v1.0-beta2/swagger2.json)接口文档，在本文档中就不再赘述接口样例，可自行在[swagger-editor](http://editor.swagger.io/)进行查阅。
 <br>
-array是调用合约传入的参数，在用go编写智能合约的时候，智能合约所接收的参数为一个字符串数组，其中字符串数组的第一个参数是智能合约的方法名。这里的array所传入的参数就是智能合约所接收的数组参数。
-#### /sdk/trace
-##### 在指定频道内根据transactionID查询区块
-```json
-{
-   "intent": "queryBlockByTransactionID",
-   "traceId": "08b5db91c7723cb61651a4af1034633a2833031a1cdb4415df0d8f6727020a4f"
-}
-```
-##### 在指定频道内根据hash查询区块
-```json
-{
-   "intent": "queryBlockByHash",
-   "traceId": "8f63d99744752a89a49fcee560a43c271b7f12e37dfaa3489da028b610943595"
-}
-```
-##### 在指定频道内根据区块高度查询区块
-```json
-{
-   "intent": "queryBlockByNumber",
-   "traceId": "9"
-}
-```
-##### 查询当前频道的链信息（包括链长度、当前最新区块hash以及当前最新区块的上一区块hash）
-```json
-{
-   "intent": "queryBlockchainInfo"
-}
-```
-#### /sdk/org/add
-```json
-{
-    "chaincodeName": "test2cc",
-    "chaincodePath": "chaincode/chaincode_example02",
-    "chaincodeVersion": "1.2",
-    "channelName": "mychannel",
-    "cryptoConfigDir": "/home/jar/crypto-config",
-    "invokeWaitTime": 120,
-    "ordererDomainName": "example.com",
-    "orgDomainName": "org1.example.com",
-    "orgMSPID": "Org1MSP",
-    "orgName": "Org1",
-    "proposalWaitTime": 90000,
-    "tls": true,
-    "username": "Admin"
-}
-```
-该方法是在sdk容器启动后根据实际需求进行调用，如YAML中配置的变量写错，可以通过该方法重新设置组织信息
-#### /sdk/orderer/set
-```json
-{
-    "hash": "241bfeb3878c8d246992b6e7c09ee2c4",
-    "name": "orderer.example.com",
-    "location": "grpc://118.89.243.236:7050"
-}
-```
-该方法是在sdk容器启动后根据实际需求进行调用，如YAML中配置的变量写错，可以通过该方法重新设置排序服务信息
-#### /sdk/peer/set
-```json
-{
-    "hash": "241bfeb3878c8d246992b6e7c09ee2c4",
-    "peerName": "peer0.org1.example.com",
-    "peerEventHubName": "peer0.org1.example.com",
-    "peerLocation": "grpc://118.89.243.236:7051",
-    "peerEventHubLocation": "grpc://118.89.243.236:7053",
-    "isEventListener": 1
-}
-```
-**注意：新增排序服务和节点服务中的hash来自新增组织的api回调结果，即必须先新增组织，然后在该组织下新增排序服务和节点服务，以此来完成一个Fabric的组网操作。**
+也可以通过当前部署fabric-sdk-container服务器的ip和配置文件中映射的端口号进行访问，如http://ip:port/swagger-ui.html。
+<br><br>
+这里有几个点需要说明一下：
+<br>
+1、组织hash可以通过/sdk/org/list接口获取，这个接口获取的是一个集合，请选择你所需要的组织hash。
+<br>
+2、args是调用合约传入的参数，在用go编写智能合约的时候，智能合约所接收的参数为一个字符串数组，其中字符串数组的第一个参数是智能合约的方法名。chaincode接口中的args所传入的参数就是智能合约所接收的数组参数。
+<br>
+3、新增排序服务和节点服务中的hash来自新增组织的api回调结果，即必须先新增组织，然后在该组织下新增排序服务和节点服务，以此来完成一个Fabric的组网操作。
 ## 代码简要说明
 ### sdk-advance
 sdk-advance是基于fabric-sdk-java v1.1的服务，其主要目的是为了更简单的使用fabric-sdk-java，对原有的调用方法做了进一步封装，主要提供了各种中转对象，如智能合约、通道、排序服务、节点、用户等等，最终将所有的中转对象交由一个中转组织来负责配置，其对外提供服务的方式则交给FabricManager来掌管。
@@ -225,7 +157,7 @@ Fabric中有用户的概念，当然除了用户之外，在1.1中也有组织�
 区块链网络服务管理器FabricManager，作为APP直接调用Fabric区块链网络的入口对象，该对象提供了Channel和ChaincodeID相关的所有接口。
 <br><br>
 ### simple
-simple是一个基于spring-boot的项目，在simple中主要关注[SimpleManager](https://github.com/abericyang/fabric-sdk-java-app/blob/master/simple/src/main/java/cn/aberic/simple/module/manager/SimpleManager.java)对象的使用，该对象的使用建议根据自身业务的实际需求重新包装上线，但直接基于此项目应用也没什么大问题。<br>
+simple是一个基于spring-boot的项目，在simple中主要关注[SimpleManager](https://github.com/abericyang/fabric-sdk-java-app/blob/master/simple/src/main/java/cn/aberic/simple/module/manager/SimpleManager.java)对象的使用。<br>
 **我的这个simple中的ip的自己申请的服务器，大家可以随便测试，但不保证有效期，建议自行搭建本地服务测试。**
 <br><br>
 欢迎与我多多交流：<br>

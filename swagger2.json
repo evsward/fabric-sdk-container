@@ -1,0 +1,777 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "HyperLedger Fabric SDK API接口文档",
+        "version": "1.0",
+        "title": "fabric-sdk-container-api",
+        "contact": {
+            "name": "Aberic",
+            "url": "https://github.com/aberic/fabric-sdk-container",
+            "email": "aberic@qq.com"
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "tags": [{
+        "name": "fabric-sdk-api",
+        "description": "Simple Controller"
+    }],
+    "paths": {
+        "/sdk/chaincode/invoke": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "执行智能合约",
+                "operationId": "invokeUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "合约对象",
+                    "description": "操作合约所需转接对象",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/合约对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/chaincode/query": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "查询智能合约",
+                "operationId": "queryUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "合约对象",
+                    "description": "操作合约所需转接对象",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/合约对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/init": {
+            "get": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "初始化环境变量数据，一般不允许被调用",
+                "operationId": "initUsingGET",
+                "produces": ["*/*"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/orderer/add": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "新增排序服务对象",
+                "operationId": "addOrdererUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "排序服务对象",
+                    "description": "排序服务对象信息",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/排序服务对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/orderer/list/{hash}": {
+            "get": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "获取排序服务对象集合",
+                "operationId": "ordererListUsingGET",
+                "produces": ["*/*"],
+                "parameters": [{
+                    "name": "当前组织Hash",
+                    "in": "path",
+                    "description": "Hash值",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/orderer/update": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "更新排序服务对象",
+                "operationId": "updateOrdererUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "排序服务对象",
+                    "description": "排序服务对象信息",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/排序服务对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/org/add": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "新增组织对象",
+                "operationId": "addOrgUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "组织对象",
+                    "description": "组织对象详情",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/使用指定用户访问指定通道指定智能合约的组织信息对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/org/list": {
+            "get": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "获取组织对象集合",
+                "operationId": "orgListUsingGET",
+                "produces": ["*/*"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/org/update": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "更新组织对象",
+                "operationId": "updateOrgUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "组织对象",
+                    "description": "组织对象详情",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/使用指定用户访问指定通道指定智能合约的组织信息对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/peer/add": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "新增节点服务对象",
+                "operationId": "addPeerUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "节点服务对象",
+                    "description": "节点服务对象信息",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/节点服务对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/peer/list/{hash}": {
+            "get": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "获取节点服务对象集合",
+                "operationId": "peerListUsingGET",
+                "produces": ["*/*"],
+                "parameters": [{
+                    "name": "当前组织Hash",
+                    "in": "path",
+                    "description": "Hash值",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/peer/update": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "更新节点服务对象",
+                "operationId": "updatePeerUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "节点服务对象",
+                    "description": "节点服务对象信息",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/节点服务对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/trace/hash": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "根据交易hash查询区块",
+                "operationId": "queryBlockByHashUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "溯源对象",
+                    "description": "溯源操作所需转接对象",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/溯源对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/trace/info/{hash}": {
+            "get": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "查询当前链信息",
+                "operationId": "queryBlockchainInfoUsingGET",
+                "produces": ["*/*"],
+                "parameters": [{
+                    "name": "当前组织Hash",
+                    "in": "path",
+                    "description": "Hash值",
+                    "required": true,
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/trace/number": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "根据交易区块高度查询区块",
+                "operationId": "queryBlockByNumberUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "溯源对象",
+                    "description": "溯源操作所需转接对象",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/溯源对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/sdk/trace/txid": {
+            "post": {
+                "tags": ["fabric-sdk-api"],
+                "summary": "根据交易ID查询区块",
+                "operationId": "queryBlockByTransactionIDUsingPOST",
+                "consumes": ["application/json"],
+                "produces": ["*/*"],
+                "parameters": [{
+                    "in": "body",
+                    "name": "溯源对象",
+                    "description": "溯源操作所需转接对象",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/溯源对象"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "使用指定用户访问指定通道指定智能合约的组织信息对象": {
+            "type": "object",
+            "required": ["chaincodeName", "chaincodePath", "chaincodeVersion", "channelName", "cryptoConfigDir", "hash", "invokeWaitTime", "ordererDomainName", "orgDomainName", "orgMSPID", "orgName", "proposalWaitTime", "tls", "username"],
+            "properties": {
+                "chaincodeName": {
+                    "type": "string",
+                    "description": "智能合约名称",
+                    "allowEmptyValue": false
+                },
+                "chaincodePath": {
+                    "type": "string",
+                    "description": "智能合约路径",
+                    "allowEmptyValue": false
+                },
+                "chaincodeVersion": {
+                    "type": "string",
+                    "description": "智能合约版本",
+                    "allowEmptyValue": false
+                },
+                "channelName": {
+                    "type": "string",
+                    "description": "当前组织所访问的通道名称",
+                    "allowEmptyValue": false
+                },
+                "cryptoConfigDir": {
+                    "type": "string",
+                    "description": "CryptoConfig所在目录的目录名称",
+                    "allowEmptyValue": false
+                },
+                "hash": {
+                    "type": "string",
+                    "description": "组织hash",
+                    "allowEmptyValue": false
+                },
+                "invokeWaitTime": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "事务等待时间以秒为单位",
+                    "allowEmptyValue": false
+                },
+                "ordererDomainName": {
+                    "type": "string",
+                    "description": "排序服务域名",
+                    "allowEmptyValue": false
+                },
+                "orgDomainName": {
+                    "type": "string",
+                    "description": "组织域名",
+                    "allowEmptyValue": false
+                },
+                "orgMSPID": {
+                    "type": "string",
+                    "description": "组织唯一标识符",
+                    "allowEmptyValue": false
+                },
+                "orgName": {
+                    "type": "string",
+                    "description": "组织名称",
+                    "allowEmptyValue": false
+                },
+                "proposalWaitTime": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "单个提案请求的超时时间以毫秒为单位",
+                    "allowEmptyValue": false
+                },
+                "tls": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "是否开启TLS",
+                    "allowEmptyValue": false
+                },
+                "username": {
+                    "type": "string",
+                    "description": "设置默认用户",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "使用指定用户访问指定通道指定智能合约的组织信息对象",
+            "description": "组织信息对象"
+        },
+        "合约对象": {
+            "type": "object",
+            "required": ["args", "hash"],
+            "properties": {
+                "args": {
+                    "type": "array",
+                    "description": "当前执行合约的参数集合",
+                    "allowEmptyValue": false,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "hash": {
+                    "type": "string",
+                    "description": "当前执行合约的组织hash",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "合约对象",
+            "description": "操作合约所需转接对象"
+        },
+        "排序服务对象": {
+            "type": "object",
+            "required": ["hash", "location", "name", "orgHash"],
+            "properties": {
+                "hash": {
+                    "type": "string",
+                    "description": "排序服务hash",
+                    "allowEmptyValue": false
+                },
+                "location": {
+                    "type": "string",
+                    "description": "排序服务器地址",
+                    "allowEmptyValue": false
+                },
+                "name": {
+                    "type": "string",
+                    "description": "排序服务器名称",
+                    "allowEmptyValue": false
+                },
+                "orgHash": {
+                    "type": "string",
+                    "description": "组织hash",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "排序服务对象",
+            "description": "排序服务对象信息"
+        },
+        "溯源对象": {
+            "type": "object",
+            "required": ["hash", "trace"],
+            "properties": {
+                "hash": {
+                    "type": "string",
+                    "description": "当前执行合约的组织hash",
+                    "allowEmptyValue": false
+                },
+                "trace": {
+                    "type": "string",
+                    "description": "当前组织链查询id",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "溯源对象",
+            "description": "溯源操作所需转接对象"
+        },
+        "节点服务对象": {
+            "type": "object",
+            "required": ["hash", "orgHash", "peerEventHubLocation", "peerEventHubName", "peerLocation", "peerName"],
+            "properties": {
+                "eventListener": {
+                    "type": "boolean"
+                },
+                "hash": {
+                    "type": "string",
+                    "description": "节点hash",
+                    "allowEmptyValue": false
+                },
+                "orgHash": {
+                    "type": "string",
+                    "description": "组织hash",
+                    "allowEmptyValue": false
+                },
+                "peerEventHubLocation": {
+                    "type": "string",
+                    "description": "当前指定的组织节点事件监听访问地址",
+                    "allowEmptyValue": false
+                },
+                "peerEventHubName": {
+                    "type": "string",
+                    "description": "当前指定的组织节点事件域名",
+                    "allowEmptyValue": false
+                },
+                "peerLocation": {
+                    "type": "string",
+                    "description": "当前指定的组织节点访问地址",
+                    "allowEmptyValue": false
+                },
+                "peerName": {
+                    "type": "string",
+                    "description": "当前指定的组织节点域名",
+                    "allowEmptyValue": false
+                }
+            },
+            "title": "节点服务对象",
+            "description": "节点服务对象信息"
+        }
+    }
+}
